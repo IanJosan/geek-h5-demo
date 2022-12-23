@@ -4,8 +4,52 @@ import Input from '../../component/Input/index'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import classNames from 'classname'
+import { useDispatch } from 'react-redux'
+import { sendCode } from '../../store/actions/login'
+import { Toast } from 'antd-mobile'
+import { useState } from 'react'
 function Login() {
-  const onExtraClick = () => {}
+  const [time, setTime] = useState(0)
+  const onExtraClick = async () => {
+    if (time > 0) return
+    if (!/^1[3-9]\d{9}$/.test(mobile)) {
+      formik.setTouched({
+        mobile: true,
+      })
+      return
+    }
+    try {
+      await dispatch(sendCode(mobile))
+      Toast.show({
+        content: '获取成功',
+        icon: 'success',
+        duration: 1000,
+      })
+    } catch (err) {
+      if (err.response) {
+        Toast.show({
+          content: err.response.data.message,
+          icon: 'fail',
+          duration: 1000,
+        })
+        setTime(60)
+        let timeId = setInterval(() => {
+          setTime((time) => {
+            if (time === 1) {
+              clearInterval(timeId)
+            }
+            return time - 1
+          })
+        }, 1000)
+      } else {
+        Toast.show({
+          content: '服务器忙',
+          icon: 'fail',
+          duration: 1000,
+        })
+      }
+    }
+  }
   const formik = useFormik({
     initialValues: {
       mobile: '',
@@ -32,6 +76,7 @@ function Login() {
     touched,
     isValid,
   } = formik
+  const dispatch = useDispatch()
   return (
     <div className={styles.root}>
       <Navbar>登录</Navbar>
@@ -55,7 +100,7 @@ function Login() {
           <div className="input-item">
             <Input
               placeholder="请输入验证码"
-              extra="获取验证码"
+              extra={time === 0 ? '获取验证码' : time + 's后获取'}
               onExtraClick={onExtraClick}
               value={code}
               onChange={handleChange}
