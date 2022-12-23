@@ -5,11 +5,13 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import classNames from 'classname'
 import { useDispatch } from 'react-redux'
-import { sendCode } from '../../store/actions/login'
+import { sendCode, login } from '../../store/actions/login'
 import { Toast } from 'antd-mobile'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 function Login() {
   const [time, setTime] = useState(0)
+  const navigate = useNavigate()
   const onExtraClick = async () => {
     if (time > 0) return
     if (!/^1[3-9]\d{9}$/.test(mobile)) {
@@ -18,45 +20,36 @@ function Login() {
       })
       return
     }
-    try {
-      await dispatch(sendCode(mobile))
-      Toast.show({
-        content: '获取成功',
-        icon: 'success',
-        duration: 1000,
+
+    await dispatch(sendCode(mobile))
+    Toast.show({
+      content: '获取成功',
+      icon: 'success',
+      duration: 1000,
+    })
+    setTime(60)
+    let timeId = setInterval(() => {
+      setTime((time) => {
+        if (time === 1) {
+          clearInterval(timeId)
+        }
+        return time - 1
       })
-    } catch (err) {
-      if (err.response) {
-        Toast.show({
-          content: err.response.data.message,
-          icon: 'fail',
-          duration: 1000,
-        })
-        setTime(60)
-        let timeId = setInterval(() => {
-          setTime((time) => {
-            if (time === 1) {
-              clearInterval(timeId)
-            }
-            return time - 1
-          })
-        }, 1000)
-      } else {
-        Toast.show({
-          content: '服务器忙',
-          icon: 'fail',
-          duration: 1000,
-        })
-      }
-    }
+    }, 1000)
   }
   const formik = useFormik({
     initialValues: {
       mobile: '',
       code: '',
     },
-    onSubmit(values) {
-      console.log(values)
+    async onSubmit(values) {
+      await dispatch(login(values))
+      Toast.show({
+        content: '登录成功',
+        icon: 'success',
+        duration: 1000,
+      })
+      navigate('/home', { replace: true })
     },
     validationSchema: Yup.object({
       mobile: Yup.string()

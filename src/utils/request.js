@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { Toast } from 'antd-mobile'
+
 const instance = axios.create({
   timeout: 5000,
   baseURL: 'http://geek.itheima.net/v1_0/',
@@ -17,6 +19,19 @@ instance.interceptors.response.use(
     return response.data
   },
   (err) => {
+    if (err.response) {
+      Toast.show({
+        content: err.response.data.message,
+        icon: 'fail',
+        duration: 1000,
+      })
+    } else {
+      Toast.show({
+        content: '服务器忙',
+        icon: 'fail',
+        duration: 1000,
+      })
+    }
     return Promise.reject(err)
   }
 )
