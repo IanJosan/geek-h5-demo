@@ -6,8 +6,9 @@ import {
   Routes,
   Navigate,
 } from 'react-router-dom'
-const Home = React.lazy(() => import('./pages/Home'))
+const Home = React.lazy(() => import('./pages/Layout'))
 const Login = React.lazy(() => import('./pages/Login'))
+const ProfileEdit = React.lazy(() => import('./pages/Profile/Edit'))
 function App() {
   return (
     <Router>
@@ -19,7 +20,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
             <Route path="/login" element={<Login></Login>}></Route>
-            <Route path="/home" element={<Home></Home>}></Route>
+            <Route path="/home/*" element={<Home></Home>}></Route>
+            <Route
+              path="/profile/edit"
+              element={<ProfileEdit></ProfileEdit>}
+            ></Route>
           </Routes>
         </Suspense>
       </div>

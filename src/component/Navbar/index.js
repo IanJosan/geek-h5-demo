@@ -1,10 +1,14 @@
 import Icon from '../../component/Icon'
 import styles from './index.module.scss'
 import { useNavigate } from 'react-router-dom'
-export default function Navbar({ children, extra }) {
+export default function Navbar({ children, extra, onLeftClick }) {
   const navigate = useNavigate()
   const back = () => {
-    navigate('/home')
+    if (onLeftClick) {
+      onLeftClick()
+    } else {
+      navigate(-1)
+    }
   }
   return (
     <div>
