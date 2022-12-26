@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 import classnames from 'classname'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 export default function Textarea({ maxLength, className, ...rest }) {
   const [value, setValue] = useState(rest.value || '')
   const onChange = (e) => {
@@ -9,9 +9,14 @@ export default function Textarea({ maxLength, className, ...rest }) {
       rest.onChange(e)
     }
   }
+  const textRef = useRef(null)
+  useEffect(() => {
+    textRef.current.focus()
+  }, [])
   return (
     <div className={styles.root}>
       <textarea
+        ref={textRef}
         className={classnames('textarea', className)}
         maxLength={maxLength}
         {...rest}

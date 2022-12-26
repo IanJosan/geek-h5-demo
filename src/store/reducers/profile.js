@@ -16,5 +16,6 @@ export default function reducer(state = initValue, action) {
       profile: payload,
     }
   }
+
   return state
 }

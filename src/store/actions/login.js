@@ -1,5 +1,5 @@
 import request from '../../utils/request'
-import { setTokenInfo } from '../../utils/storage'
+import { removeTokenInfo, setTokenInfo } from '../../utils/storage'
 export const sendCode = (mobile) => {
   return async (dispatch) => {
     const res = await request({
@@ -27,5 +27,14 @@ export const saveToken = (payload) => {
   return {
     type: 'login/token',
     payload,
+  }
+}
+// logout
+export const logout = () => {
+  return (dispatch) => {
+    removeTokenInfo()
+    dispatch({
+      type: 'login/logout',
+    })
   }
 }

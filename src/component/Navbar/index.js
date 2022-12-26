@@ -1,7 +1,8 @@
 import Icon from '../../component/Icon'
 import styles from './index.module.scss'
+import classnames from 'classname'
 import { useNavigate } from 'react-router-dom'
-export default function Navbar({ children, extra, onLeftClick }) {
+export default function Navbar({ children, extra, onLeftClick, classname }) {
   const navigate = useNavigate()
   const back = () => {
     if (onLeftClick) {
@@ -12,7 +13,7 @@ export default function Navbar({ children, extra, onLeftClick }) {
   }
   return (
     <div>
-      <div className={styles.root}>
+      <div className={classnames(styles.root, classname)}>
         <div className="left">
           <Icon type="iconfanhui" onClick={back}></Icon>
         </div>

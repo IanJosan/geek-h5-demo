@@ -7,5 +7,8 @@ export default function reducer(state = initvalue, action) {
   if (type === 'login/token') {
     return payload
   }
+  if (type === 'login/logut') {
+    return {}
+  }
   return state
 }

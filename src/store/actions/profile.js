@@ -1,6 +1,5 @@
 import request from '../../utils/request'
 import { SAVE_USER, SAVE_PROFILE } from '../action_types/profile'
-
 export const saveUser = (payload) => {
   return {
     type: SAVE_USER,
@@ -37,6 +36,16 @@ export const updateProfile = (data) => {
       method: 'patch',
       url: '/user/profile',
       data,
+    })
+    dispatch(getProfile())
+  }
+}
+export const updatePhoto = (fd) => {
+  return async (dispatch) => {
+    await request({
+      method: 'patch',
+      url: '/user/photo',
+      fd,
     })
     dispatch(getProfile())
   }

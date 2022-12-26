@@ -24,6 +24,7 @@ export default function EditInput({ onclose, type, onCommit }) {
       </div>
       {type === 'name' ? (
         <Input
+          autoFocus
           className="input-wrap"
           value={value}
           onChange={(e) => setValue(e.target.value)}
