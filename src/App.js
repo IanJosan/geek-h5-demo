@@ -1,19 +1,22 @@
 import './App.scss'
 import React, { Suspense } from 'react'
 import {
-  BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
+  unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom'
 import AuthRoute from './component/AuthRoute'
+import history from './utils/history'
 const Home = React.lazy(() => import('./pages/Layout'))
 const Login = React.lazy(() => import('./pages/Login'))
 const ProfileEdit = React.lazy(() => import('./pages/Profile/Edit'))
 const ProfileChat = React.lazy(() => import('./pages/Profile/Chat'))
+const NotFound = React.lazy(() => import('./pages/NotFound'))
+
 function App() {
   return (
-    <Router>
+    <HistoryRouter history={history}>
       <div className="app">
         {/* <Link to="/login">登录</Link>
         <Link to="/home">首页</Link> */}
@@ -47,10 +50,11 @@ function App() {
                 </AuthRoute>
               }
             ></Route>
+            <Route path="*" element={<NotFound></NotFound>}></Route>
           </Routes>
         </Suspense>
       </div>
-    </Router>
+    </HistoryRouter>
   )
 }
 

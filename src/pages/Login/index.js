@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { sendCode, login } from '../../store/actions/login'
 import { Toast } from 'antd-mobile'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 function Login() {
   const [time, setTime] = useState(0)
   const navigate = useNavigate()
@@ -37,6 +37,7 @@ function Login() {
       })
     }, 1000)
   }
+  const location = useLocation()
   const formik = useFormik({
     initialValues: {
       mobile: '',
@@ -49,7 +50,9 @@ function Login() {
         icon: 'success',
         duration: 1000,
       })
-      navigate('/home', { replace: true })
+
+      const pathname = location.state ? location.state.from : '/home'
+      navigate(pathname, { replace: true })
     },
     validationSchema: Yup.object({
       mobile: Yup.string()
