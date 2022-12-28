@@ -7,6 +7,7 @@ import Icon from '../../component/Icon'
 import { Popup } from 'antd-mobile'
 import { useState } from 'react'
 import Channels from './components/Channels'
+import ArticleList from './components/ArticleList'
 function Home() {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -18,9 +19,24 @@ function Home() {
   const onClose = () => {
     setOpen(false)
   }
+  const [active, setActive] = useState(0)
   return (
     <div className={styles.root}>
-      <Tabs tabs={tabs}></Tabs>
+      <Tabs
+        tabs={tabs}
+        index={active}
+        onChange={(e) => {
+          setActive(e)
+        }}
+      >
+        {tabs.map((item) => (
+          <ArticleList
+            key={item.id}
+            channelId={item.id}
+            activeId={tabs[active].id}
+          ></ArticleList>
+        ))}
+      </Tabs>
       <div className="tabs-opration">
         <Icon type="iconbtn_search" />
         <Icon type="iconbtn_channel" onClick={() => setOpen(true)} />
@@ -34,7 +50,15 @@ function Home() {
         position="left"
         bodyStyle={{ minWidth: '60vw' }}
       >
-        {open && <Channels onClose={onClose}></Channels>}
+        {open && (
+          <Channels
+            onClose={onClose}
+            index={active}
+            onChange={(e) => {
+              setActive(e)
+            }}
+          ></Channels>
+        )}
       </Popup>
     </div>
   )

@@ -4,7 +4,11 @@ import {
   hasToken,
   setLocalChannels,
 } from '../../utils/storage'
-import { SAVE_CHANNELS, SAVE_ALL_CHANNELS } from '../action_types/home'
+import {
+  SAVE_CHANNELS,
+  SAVE_ALL_CHANNELS,
+  SAVE_ARTICLE_LIST,
+} from '../action_types/home'
 export const getUserChannels = () => {
   return async (dispatch) => {
     if (hasToken()) {
@@ -40,6 +44,64 @@ export const getAllChannels = (payload) => {
 export const saveAllChannels = (payload) => {
   return {
     type: SAVE_ALL_CHANNELS,
+    payload,
+  }
+}
+
+export const delChannel = (channel) => {
+  return async (dispatch, getState) => {
+    const userChannels = getState().home.userChannels
+    if (hasToken()) {
+      await request.delete('/user/channels/' + channel.id)
+      dispatch(
+        saveUserChannels(userChannels.filter((item) => item.id !== channel.id))
+      )
+    } else {
+      const result = userChannels.filter((item) => item.id !== channel.id)
+      dispatch(saveUserChannels(result))
+      setLocalChannels(result)
+    }
+  }
+}
+
+export const addChannel = (channel) => {
+  return async (dispatch, getState) => {
+    const channels = [...getState().home.userChannels, channel]
+    if (hasToken()) {
+      await request.patch('/user/channels', {
+        channels: [channel],
+      })
+      dispatch(saveUserChannels(channels))
+    } else {
+      dispatch(saveUserChannels(channels))
+      setLocalChannels(channels)
+    }
+  }
+}
+
+export const getAticleList = (channelId, timeStamp) => {
+  return async (dispatch) => {
+    const res = await request({
+      url: '/articles',
+      method: 'get',
+      params: {
+        channel_id: channelId,
+        timestamp: Date.now(),
+      },
+    })
+    dispatch(
+      setArticleList({
+        channelId,
+        timeStamp: res.data.pre_timestamp,
+        list: res.data.results,
+      })
+    )
+  }
+}
+
+export const setArticleList = (payload) => {
+  return {
+    type: SAVE_ARTICLE_LIST,
     payload,
   }
 }
