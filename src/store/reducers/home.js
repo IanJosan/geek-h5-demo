@@ -8,6 +8,10 @@ const initValue = {
   userChannels: [],
   allChannels: [],
   articles: {},
+  moreAction: {
+    visible: false,
+    articleId: '',
+  },
 }
 export default function rducer(state = initValue, action) {
   const { type, payload } = action
@@ -29,9 +33,16 @@ export default function rducer(state = initValue, action) {
           ...state.articles,
           [payload.channelId]: {
             timestamp: payload.timestamp,
-            list: payload.list,
+            list: payload.LoadMore
+              ? [...state.articles[payload.channelId].list, ...payload.list]
+              : payload.list,
           },
         },
+      }
+    case 'home/setMoreAction':
+      return {
+        ...state,
+        moreAction: payload,
       }
     default:
       return state

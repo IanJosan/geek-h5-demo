@@ -79,21 +79,22 @@ export const addChannel = (channel) => {
   }
 }
 
-export const getAticleList = (channelId, timeStamp) => {
+export const getAticleList = (channelId, timeStamp, LoadMore = false) => {
   return async (dispatch) => {
     const res = await request({
       url: '/articles',
       method: 'get',
       params: {
         channel_id: channelId,
-        timestamp: Date.now(),
+        timestamp: timeStamp,
       },
     })
     dispatch(
       setArticleList({
         channelId,
-        timeStamp: res.data.pre_timestamp,
+        timestamp: res.data.pre_timestamp,
         list: res.data.results,
+        LoadMore,
       })
     )
   }
@@ -103,5 +104,24 @@ export const setArticleList = (payload) => {
   return {
     type: SAVE_ARTICLE_LIST,
     payload,
+  }
+}
+
+export const setMoreAction = (payload) => {
+  return {
+    type: 'home/setMoreAction',
+    payload,
+  }
+}
+
+export const unLikeArticle = (articleId) => {
+  return async (dispatch, getState) => {
+    await request({
+      method: 'post',
+      url: '/article/dislikes',
+      data: {
+        target: articleId,
+      },
+    })
   }
 }

@@ -6,8 +6,9 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 // 导入中文包
 import 'dayjs/locale/zh-cn'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import Image from '../../../../component/Img'
+import { useDispatch, useSelector } from 'react-redux'
+import { setMoreAction } from '../../../../store/actions/home'
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 // import { setMoreAction } from '@/store/actions/home'
@@ -20,7 +21,8 @@ const ArticleItem = ({ article }) => {
     comm_count,
     pubdate,
   } = article
-
+  const isLogin = useSelector((state) => !!state.login.token)
+  const dispatch = useDispatch()
   return (
     <div className={styles.root}>
       {/* t3: 三图结构 none-mt没有图片结构  */}
@@ -36,7 +38,7 @@ const ArticleItem = ({ article }) => {
           <div className="article-imgs">
             {images.map((item, i) => (
               <div className="article-img-wrapper" key={i}>
-                <img src={item} alt="" />
+                <Image src={item} alt="" />
               </div>
             ))}
           </div>
@@ -49,7 +51,19 @@ const ArticleItem = ({ article }) => {
         {/* fromNow: 距离现在的时间 */}
 
         <span className="close">
-          {<Icon type="iconbtn_essay_close" onClick={() => {}} />}
+          {isLogin && (
+            <Icon
+              type="iconbtn_essay_close"
+              onClick={() =>
+                dispatch(
+                  setMoreAction({
+                    visible: true,
+                    articleId: article.art_id,
+                  })
+                )
+              }
+            />
+          )}
         </span>
       </div>
     </div>

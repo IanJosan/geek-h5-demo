@@ -8,6 +8,7 @@ import { Popup } from 'antd-mobile'
 import { useState } from 'react'
 import Channels from './components/Channels'
 import ArticleList from './components/ArticleList'
+import MoreAction from './components/MoreAction'
 function Home() {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -60,6 +61,7 @@ function Home() {
           ></Channels>
         )}
       </Popup>
+      <MoreAction></MoreAction>
     </div>
   )
 }
