@@ -1,17 +1,26 @@
 import styles from './index.module.scss'
-import classNames from 'classname'
+import classNames from 'classnames'
 import { useEffect, useRef } from 'react'
+import { InputHTMLAttributes } from 'react'
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  extra?: string
+  onExtraClick?: () => void
+  autoFocus?: boolean
+  className?: string
+  type?: 'text' | 'password'
+}
+
 export default function Input({
   extra,
   onExtraClick,
   autoFocus,
   className,
   ...rest
-}) {
-  const inputRef = useRef(null)
+}: Props) {
+  const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
     if (autoFocus) {
-      inputRef.current.focus()
+      inputRef.current!.focus()
     }
   }, [autoFocus])
   return (
