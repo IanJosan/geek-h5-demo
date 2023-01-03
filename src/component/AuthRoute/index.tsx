@@ -1,7 +1,10 @@
 import { Navigate } from 'react-router-dom'
 import { hasToken } from '../../utils/storage'
 import { useLocation } from 'react-router'
-function AuthRoute({ children }) {
+type Props = {
+  children: React.ComponentType<any>
+}
+function AuthRoute({ children }: Props) {
   const location = useLocation()
   if (hasToken()) {
     return <>{children}</>
@@ -10,9 +13,9 @@ function AuthRoute({ children }) {
       <Navigate
         to={{
           pathname: '/login',
-          state: {
-            from: location.pathname,
-          },
+        }}
+        state={{
+          from: location.pathname,
         }}
         replace
       ></Navigate>
