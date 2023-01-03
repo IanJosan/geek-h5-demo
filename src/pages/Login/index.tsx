@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import Input from '../../component/Input/index'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import classNames from 'classname'
+import classNames from 'classnames'
 import { useDispatch } from 'react-redux'
 import { sendCode, login } from '../../store/actions/login'
 import { Toast } from 'antd-mobile'
@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 function Login() {
   const [time, setTime] = useState(0)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const onExtraClick = async () => {
     if (time > 0) return
     if (!/^1[3-9]\d{9}$/.test(mobile)) {
@@ -72,7 +73,6 @@ function Login() {
     touched,
     isValid,
   } = formik
-  const dispatch = useDispatch()
   return (
     <div className={styles.root}>
       <Navbar>登录</Navbar>

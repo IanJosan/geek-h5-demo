@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom'
 import { hasToken } from '../../utils/storage'
 import { useLocation } from 'react-router'
 type Props = {
-  children: React.ComponentType<any>
+  children: any
 }
 function AuthRoute({ children }: Props) {
   const location = useLocation()

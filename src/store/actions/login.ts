@@ -1,17 +1,17 @@
+import { Dispatch } from 'redux'
 import request from '../../utils/request'
 import { removeTokenInfo, setTokenInfo } from '../../utils/storage'
-export const sendCode = (mobile) => {
-  return async (dispatch) => {
-    const res = await request({
+export const sendCode = (mobile: string) => {
+  return async () => {
+    await request({
       url: '/sms/codes/' + mobile,
       method: 'get',
     })
-    console.log(res)
   }
 }
 // 异步action
-export const login = (data) => {
-  return async (dispatch) => {
+export const login = (data: { mobile: string; code: string }) => {
+  return async (dispatch: Dispatch) => {
     const res = await request({
       method: 'post',
       url: '/authorizations',
@@ -21,9 +21,9 @@ export const login = (data) => {
     setTokenInfo(res.data)
   }
 }
-
+type Token = { token: string; refresh_token: string }
 // 同步action
-export const saveToken = (payload) => {
+export const saveToken = (payload: Token) => {
   return {
     type: 'login/token',
     payload,
@@ -31,7 +31,7 @@ export const saveToken = (payload) => {
 }
 // logout
 export const logout = () => {
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
     removeTokenInfo()
     dispatch({
       type: 'login/logout',

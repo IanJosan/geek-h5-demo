@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 import Icon from '../../component/Icon'
 import { useNavigate, useLocation, Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
-import classNames from 'classname'
+import classNames from 'classnames'
 const Home = lazy(() => import('../Home'))
 const QA = lazy(() => import('../QA'))
 const Video = lazy(() => import('../Video'))
