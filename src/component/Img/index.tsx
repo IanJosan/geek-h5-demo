@@ -1,18 +1,23 @@
-import classnames from 'classname'
+import classnames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import Icon from '../Icon/index'
 import styles from './index.module.scss'
-
-const Image = ({ className, src, alt }) => {
-  const imgRef = useRef(null)
+type Props = {
+  className?: string
+  src: string
+  alt?: string
+}
+const Image = ({ className, src, alt }: Props) => {
+  const imgRef = useRef<HTMLImageElement>(null)
   useEffect(() => {
+    const current = imgRef.current!
     const observer = new IntersectionObserver(([{ isIntersecting }]) => {
       if (isIntersecting) {
-        imgRef.current.src = imgRef.current.dataset.src
-        observer.unobserve(imgRef.current)
+        current.src = current.dataset.src!
+        observer.unobserve(current)
       }
     })
-    observer.observe(imgRef.current)
+    observer.observe(current)
   }, [])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
