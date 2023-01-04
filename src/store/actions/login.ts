@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import request from '../../utils/request'
-import { removeTokenInfo, setTokenInfo } from '../../utils/storage'
+import { setTokenInfo } from '../../utils/storage'
 export const sendCode = (mobile: string) => {
   return async () => {
     await request({
@@ -30,11 +30,9 @@ export const saveToken = (payload: Token) => {
   }
 }
 // logout
-export const logout = () => {
-  return (dispatch: Dispatch) => {
-    removeTokenInfo()
-    dispatch({
-      type: 'login/logout',
-    })
+export const logout = (payload: Token) => {
+  return {
+    type: 'login/logout' as const,
+    payload,
   }
 }

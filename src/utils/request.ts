@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios'
 import { Toast } from 'antd-mobile'
-import { getTokenInfo, setTokenInfo } from './storage'
+import { getTokenInfo, removeTokenInfo, setTokenInfo } from './storage'
 import history from './history'
 import store from '../store'
-import { saveToken, logout } from '../store/actions/login'
+import { logout, saveToken } from '../store/actions/login'
 const baseURL = 'http://geek.itheima.net/v1_0/'
 const instance = axios.create({
   timeout: 5000,
@@ -65,11 +65,22 @@ instance.interceptors.response.use(
         token: res.data.data.token,
         refresh_token,
       }
-      store.dispatch(saveToken(tokenInfo))
+      // store.dispatch(saveToken(tokenInfo))
+      store.dispatch({
+        type: 'login/token',
+        payload: tokenInfo,
+      })
       setTokenInfo(tokenInfo)
       return instance(err.config!)
     } catch {
-      store.dispatch(logout())
+      // store.dispatch(logout())
+      removeTokenInfo()
+      store.dispatch(
+        logout({
+          token: '',
+          refresh_token: '',
+        })
+      )
       history.push({
         pathname: '/login',
         state: {

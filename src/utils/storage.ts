@@ -9,7 +9,7 @@ export const getTokenInfo = () => {
   return JSON.parse(localStorage.getItem(TOKEN_KEY)!) || {}
 }
 type Token = { token: string; refresh_token: string }
-type Channels = {
+export type Channels = {
   id: number
   name: string
 }
