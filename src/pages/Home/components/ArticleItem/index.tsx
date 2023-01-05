@@ -9,6 +9,7 @@ import 'dayjs/locale/zh-cn'
 import Image from '../../../../component/Img'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMoreAction } from '../../../../store/actions/home'
+import { RootState } from '@/store'
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 // import { setMoreAction } from '@/store/actions/home'
@@ -21,7 +22,7 @@ const ArticleItem = ({ article }) => {
     comm_count,
     pubdate,
   } = article
-  const isLogin = useSelector((state) => !!state.login.token)
+  const isLogin = useSelector((state: RootState) => !!state.login.token)
   const dispatch = useDispatch()
   return (
     <div className={styles.root}>
@@ -34,9 +35,10 @@ const ArticleItem = ({ article }) => {
         )}
       >
         <h3>{title}</h3>
+        <img src="" alt="" />
         {type !== 0 && (
           <div className="article-imgs">
-            {images.map((item, i) => (
+            {images.map((item: string, i: number) => (
               <div className="article-img-wrapper" key={i}>
                 <Image src={item} alt="" />
               </div>

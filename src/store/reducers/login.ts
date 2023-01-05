@@ -3,7 +3,7 @@ const initvalue: Token = {
   token: '',
   refresh_token: '',
 }
-type ActionType = {
+export type ActionType = {
   type: 'login/token' | 'login/logut'
   payload: Token
 }

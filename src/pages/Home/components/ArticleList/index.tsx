@@ -4,18 +4,25 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAticleList } from '../../../../store/actions/home'
 import { PullToRefresh, InfiniteScroll } from 'antd-mobile'
-function ArticleList({ channelId, activeId }) {
+import { RootState } from '@/store'
+type Props = {
+  channelId: number
+  activeId: number
+}
+function ArticleList({ channelId, activeId }: Props) {
   const dispatch = useDispatch()
-  const current = useSelector((state) => state.home.articles[channelId])
+  const current = useSelector(
+    (state: RootState) => state.home.articles[channelId]
+  )
   useEffect(() => {
     if (current) return
     if (channelId === activeId) {
-      dispatch(getAticleList(channelId, Date.now()))
+      dispatch(getAticleList(channelId, Date.now() + ''))
     }
   }, [channelId, activeId, dispatch, current])
   const onRefresh = async () => {
     setHasMore(true)
-    await dispatch(getAticleList(channelId, Date.now()))
+    await dispatch(getAticleList(channelId, Date.now() + ''))
   }
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)

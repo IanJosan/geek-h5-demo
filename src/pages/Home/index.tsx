@@ -9,24 +9,27 @@ import { useState } from 'react'
 import Channels from './components/Channels'
 import ArticleList from './components/ArticleList'
 import MoreAction from './components/MoreAction'
+import { RootState } from '@/store'
+import { useNavigate } from 'react-router-dom'
 function Home() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUserChannels())
     dispatch(getAllChannels())
   }, [dispatch])
-  const tabs = useSelector((state) => state.home.userChannels)
+  const tabs = useSelector((state: RootState) => state.home.userChannels)
   const [open, setOpen] = useState(false)
   const onClose = () => {
     setOpen(false)
   }
   const [active, setActive] = useState(0)
+  const navigate = useNavigate()
   return (
     <div className={styles.root}>
       <Tabs
         tabs={tabs}
         index={active}
-        onChange={(e) => {
+        onChange={(e: number) => {
           setActive(e)
         }}
       >
@@ -39,7 +42,7 @@ function Home() {
         ))}
       </Tabs>
       <div className="tabs-opration">
-        <Icon type="iconbtn_search" />
+        <Icon type="iconbtn_search" onClick={() => navigate('/search')} />
         <Icon type="iconbtn_channel" onClick={() => setOpen(true)} />
       </div>
       <Popup
@@ -55,7 +58,7 @@ function Home() {
           <Channels
             onClose={onClose}
             index={active}
-            onChange={(e) => {
+            onChange={(e: any) => {
               setActive(e)
             }}
           ></Channels>

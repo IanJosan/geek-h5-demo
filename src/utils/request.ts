@@ -4,6 +4,7 @@ import { getTokenInfo, removeTokenInfo, setTokenInfo } from './storage'
 import history from './history'
 import store from '../store'
 import { logout, saveToken } from '../store/actions/login'
+import { RootThunkAction } from '../store/index'
 const baseURL = 'http://geek.itheima.net/v1_0/'
 const instance = axios.create({
   timeout: 5000,
